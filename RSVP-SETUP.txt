@@ -7,7 +7,7 @@ SAVING RSVPs TO GOOGLE SHEETS (free, ~5 minutes)
 function doPost(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
   if (sheet.getLastRow() === 0) {
-    sheet.appendRow(['Time', 'Name', 'Contact / City', 'Attendance', 'Message', 'Invited as']);
+    sheet.appendRow(['Time', 'Name', 'City', 'Relation', 'Message', 'Invited as']);
   }
   var p = e.parameter;
   sheet.appendRow([new Date(), p.name, p.contact, p.attendance, p.message, p.invitedAs]);

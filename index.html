@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shubh Vivah | Deepika weds Vikas - Royal Wedding Invitation</title>
+  <title>Shubh Vivah | Deepika weds Vikas</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2064%2064%22%3E%3Cdefs%3E%3ClinearGradient%20id=%22g%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22%23F5E084%22/%3E%3Cstop%20offset=%22.5%22%20stop-color=%22%23D4AF37%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22%2399731C%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle%20cx=%2232%22%20cy=%2232%22%20r=%2230%22%20fill=%22%234A0E17%22%20stroke=%22url%28%23g%29%22%20stroke-width=%223%22/%3E%3Ccircle%20cx=%2232%22%20cy=%2232%22%20r=%2225%22%20fill=%22none%22%20stroke=%22%23D4AF37%22%20stroke-width=%221%22%20stroke-dasharray=%222%203%22/%3E%3Ctext%20x=%2216%22%20y=%2238%22%20text-anchor=%22middle%22%20font-family=%22Georgia%2Cserif%22%20font-weight=%22700%22%20font-size=%2222%22%20fill=%22url%28%23g%29%22%3ED%3C/text%3E%3Ctext%20x=%2248%22%20y=%2238%22%20text-anchor=%22middle%22%20font-family=%22Georgia%2Cserif%22%20font-weight=%22700%22%20font-size=%2222%22%20fill=%22url%28%23g%29%22%3EV%3C/text%3E%3Cpath%20d=%22M32%2046C21%2038%2026%2030%2032%2036C38%2030%2043%2038%2032%2046Z%22%20fill=%22%23E63946%22%20transform=%22translate%280%20-9%29%20scale%281%29%22/%3E%3C/svg%3E">
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <!-- Google Fonts -->
@@ -151,6 +152,8 @@
     }
     @keyframes coupleZoom { 0%,100% { transform: scale(1); } 50% { transform: scale(1.06); } }
     .couple-zoom { animation: coupleZoom 14s ease-in-out infinite; }
+    .blessing-chip { font-size: 11px; font-family: 'Plus Jakarta Sans', sans-serif; padding: 6px 12px; border-radius: 9999px; border: 1px solid rgba(212,175,55,.5); background: rgba(212,175,55,.12); color: #F5E084; transition: all .2s; }
+    .blessing-chip:hover { background: rgba(212,175,55,.3); transform: translateY(-1px); }
     .om-glow { animation: omGlow 3s infinite ease-in-out; }
     .ring-l { animation: ringLeft 3s infinite ease-in-out; }
     .ring-r { animation: ringRight 3s infinite ease-in-out; }
@@ -681,57 +684,65 @@
 
       </div>
 
-      <!-- INTERACTIVE BLESSINGS / RSVP FORM -->
-      <div class="mt-10 bg-black/40 border border-goldbase/50 rounded-2xl p-6 sm:p-8 max-w-2xl mx-auto">
-        <h3 class="text-xl font-cinzel font-bold text-goldlight text-center mb-1">Send Your Blessings &amp; Confirm RSVP</h3>
-        <p class="text-xs text-amber-200/70 text-center font-sans mb-6">Leave an auspicious message for the couple and let the family know you will be joining the celebrations!</p>
+      <!-- INTERACTIVE BLESSINGS FORM -->
+      <div class="relative mt-10 bg-black/40 border-2 border-goldbase/60 rounded-3xl p-6 sm:p-8 max-w-2xl mx-auto overflow-hidden gold-box-shadow">
+        <div class="absolute -top-16 left-1/2 -translate-x-1/2 w-56 h-56 rounded-full bg-goldbase/15 blur-3xl pointer-events-none" aria-hidden="true"></div>
 
-        <form id="rsvp-form" class="space-y-4">
+        <div class="relative text-center mb-6">
+          <div class="mx-auto w-16 h-16 rounded-full border-2 border-goldbase bg-royalmaroon flex items-center justify-center text-3xl shadow-lg om-glow" aria-hidden="true">🙏</div>
+          <span class="block mt-3 text-[11px] font-cinzel uppercase tracking-[0.3em] text-goldbase">Ashirwad</span>
+          <h3 class="text-2xl sm:text-3xl font-decorative font-bold shimmer-gold">Give Your Special Blessing</h3>
+          <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-goldbase to-transparent mx-auto my-3"></div>
+          <p class="text-xs sm:text-sm text-amber-200/80 font-sans italic">Your blessing is the most precious gift for Deepika &amp; Vikas as they begin their new journey together.</p>
+        </div>
+
+        <form id="rsvp-form" class="relative space-y-4">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label for="rsvp-guest-name" class="block text-xs font-cinzel text-amber-200 mb-1">Your Name</label>
-              <input type="text" id="rsvp-guest-name" required placeholder="e.g. Ramesh Sharma" class="w-full bg-deepmaroon/80 border border-goldbase/40 rounded-xl px-3.5 py-2 text-sm text-amber-100 placeholder-amber-200/40 focus:outline-none focus:border-goldlight">
+              <input type="text" id="rsvp-guest-name" required maxlength="80" placeholder="e.g. Ramesh Sharma" class="w-full bg-deepmaroon/80 border border-goldbase/40 rounded-xl px-3.5 py-2.5 text-sm text-amber-100 placeholder-amber-200/40 focus:outline-none focus:border-goldlight focus:ring-1 focus:ring-goldlight/50 transition">
             </div>
             <div>
-              <label for="rsvp-phone" class="block text-xs font-cinzel text-amber-200 mb-1">Contact / City</label>
-              <input type="text" id="rsvp-phone" placeholder="e.g. +91 98xxx xxxxx / Delhi" class="w-full bg-deepmaroon/80 border border-goldbase/40 rounded-xl px-3.5 py-2 text-sm text-amber-100 placeholder-amber-200/40 focus:outline-none focus:border-goldlight">
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label for="rsvp-attendance" class="block text-xs font-cinzel text-amber-200 mb-1">Attending Ceremonies?</label>
-              <select id="rsvp-attendance" class="w-full bg-deepmaroon border border-goldbase/40 rounded-xl px-3.5 py-2 text-sm text-amber-100 focus:outline-none focus:border-goldlight">
-                <option value="Joyfully Attending with Family">Joyfully Attending with Family</option>
-                <option value="Attending Wedding Ceremony">Attending Wedding Ceremony (20th Nov)</option>
-                <option value="Attending Sangeet & Wedding">Attending Both Sangeet &amp; Wedding</option>
-                <option value="Sending Blessings from Afar">Sending Blessings from Afar</option>
-              </select>
-            </div>
-            <div>
-              <label for="rsvp-guest-count" class="block text-xs font-cinzel text-amber-200 mb-1">Number of Guests</label>
-              <select id="rsvp-guest-count" class="w-full bg-deepmaroon border border-goldbase/40 rounded-xl px-3.5 py-2 text-sm text-amber-100 focus:outline-none focus:border-goldlight">
-                <option value="1">1 Person</option>
-                <option value="2">2 Persons</option>
-                <option value="3-4" selected>Family (3-4 Members)</option>
-                <option value="5+">Large Family (5+ Members)</option>
-              </select>
+              <label for="rsvp-phone" class="block text-xs font-cinzel text-amber-200 mb-1">City / Place</label>
+              <input type="text" id="rsvp-phone" maxlength="60" placeholder="e.g. Kaithal" class="w-full bg-deepmaroon/80 border border-goldbase/40 rounded-xl px-3.5 py-2.5 text-sm text-amber-100 placeholder-amber-200/40 focus:outline-none focus:border-goldlight focus:ring-1 focus:ring-goldlight/50 transition">
             </div>
           </div>
 
           <div>
-            <label for="rsvp-message" class="block text-xs font-cinzel text-amber-200 mb-1">Your Blessings for Deepika &amp; Vikas</label>
-            <textarea id="rsvp-message" rows="3" placeholder="May your married life be filled with happiness, health and infinite love..." class="w-full bg-deepmaroon/80 border border-goldbase/40 rounded-xl p-3 text-sm text-amber-100 placeholder-amber-200/40 focus:outline-none focus:border-goldlight"></textarea>
+            <label for="rsvp-attendance" class="block text-xs font-cinzel text-amber-200 mb-1">Your Relation with the Couple</label>
+            <select id="rsvp-attendance" class="w-full bg-deepmaroon border border-goldbase/40 rounded-xl px-3.5 py-2.5 text-sm text-amber-100 focus:outline-none focus:border-goldlight">
+              <option value="Family">Family</option>
+              <option value="Relative">Relative</option>
+              <option value="Friend">Friend</option>
+              <option value="Neighbour">Neighbour</option>
+              <option value="Colleague">Colleague</option>
+              <option value="Well-wisher">Well-wisher</option>
+            </select>
           </div>
 
-          <button id="rsvp-submit-btn" type="submit" class="w-full py-3 bg-gradient-to-r from-golddark via-goldbase to-golddark text-deepmaroon font-cinzel font-bold text-xs uppercase tracking-widest rounded-xl hover:brightness-110 active:scale-98 transition-all">
-            Submit RSVP &amp; Post Blessings
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label for="rsvp-message" class="block text-xs font-cinzel text-amber-200">Your Blessing for Deepika &amp; Vikas</label>
+              <span id="rsvp-char-count" class="text-[10px] font-sans text-amber-300/60">0 / 300</span>
+            </div>
+            <textarea id="rsvp-message" rows="4" maxlength="300" required placeholder="May your married life be filled with happiness, health and infinite love..." class="w-full bg-deepmaroon/80 border border-goldbase/40 rounded-xl px-3.5 py-2.5 text-sm text-amber-100 placeholder-amber-200/40 focus:outline-none focus:border-goldlight focus:ring-1 focus:ring-goldlight/50 transition"></textarea>
+            <p class="text-[11px] text-amber-300/60 font-sans mt-2 mb-1.5">Need words? Tap one to begin:</p>
+            <div id="blessing-chips" class="flex flex-wrap gap-2">
+              <button type="button" data-text="May God bless you both with a lifetime of love, laughter and togetherness." class="blessing-chip">💛 Lifetime of love</button>
+              <button type="button" data-text="Wishing you endless happiness, good health and prosperity in your new journey." class="blessing-chip">🪔 Health &amp; prosperity</button>
+              <button type="button" data-text="May Lord Ganesha remove every obstacle and Goddess Lakshmi fill your home with joy." class="blessing-chip">🕉️ Divine blessings</button>
+              <button type="button" data-text="Two hearts, one soul. Congratulations Deepika and Vikas, may your bond grow stronger every day!" class="blessing-chip">💞 Two hearts, one soul</button>
+            </div>
+          </div>
+
+          <button id="rsvp-submit-btn" type="submit" class="w-full py-3.5 bg-gradient-to-r from-golddark via-goldbase to-golddark text-deepmaroon font-cinzel font-bold text-xs uppercase tracking-widest rounded-xl hover:brightness-110 active:scale-[.98] transition-all">
+            🌸 Send My Blessings 🌸
           </button>
         </form>
 
         <!-- Live Blessings Board -->
         <div class="mt-8 pt-6 border-t border-goldbase/30">
-          <h4 class="text-xs uppercase font-cinzel tracking-widest text-goldbase text-center mb-4">Auspicious Blessings from Friends &amp; Family</h4>
+          <h4 class="text-xs uppercase font-cinzel tracking-widest text-goldbase text-center mb-4">Blessings Received from Friends &amp; Family</h4>
           <div id="blessings-list" class="space-y-3 max-h-60 overflow-y-auto pr-1">
             <!-- Dynamically populated -->
           </div>
@@ -776,19 +787,19 @@
       {
         name: "Shyam Lal & Family",
         relation: "Kaithal",
-        attendance: "Joyfully Attending with Family",
+        attendance: "Relative",
         message: "Heartiest congratulations to our beloved Deepika and Vikas. May Lord Ganesha bless you both with lifelong joy and prosperity!"
       },
       {
         name: "Harish Saini",
         relation: "Kaithal",
-        attendance: "Attending Sangeet & Wedding",
+        attendance: "Friend",
         message: "Wishing Deepika & Vikas a very happy married life filled with laughter, love, and sweet memories!"
       },
       {
         name: "Kohar Family Relatives",
         relation: "Haryana",
-        attendance: "Attending with Family",
+        attendance: "Family",
         message: "Congratulations to Anita Bhabhi and Krishan Kumar ji on Deepika's wedding. We are looking forward to the grand celebration!"
       }
     ];
@@ -1218,10 +1229,24 @@
 
     renderBlessings();
 
+    // Quick-pick blessing chips + live character counter
+    const rsvpMessage = document.getElementById('rsvp-message');
+    const rsvpCharCount = document.getElementById('rsvp-char-count');
+    rsvpMessage.addEventListener('input', () => {
+      rsvpCharCount.textContent = rsvpMessage.value.length + ' / 300';
+    });
+    document.getElementById('blessing-chips').addEventListener('click', (e) => {
+      const chip = e.target.closest('.blessing-chip');
+      if (!chip) return;
+      rsvpMessage.value = chip.dataset.text;
+      rsvpCharCount.textContent = rsvpMessage.value.length + ' / 300';
+      rsvpMessage.focus();
+    });
+
     rsvpForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const name = document.getElementById('rsvp-guest-name').value.trim();
-      const phone = document.getElementById('rsvp-phone').value.trim() || 'Well-wisher';
+      const phone = document.getElementById('rsvp-phone').value.trim() || 'Kaithal';
       const attendance = document.getElementById('rsvp-attendance').value;
       const message = document.getElementById('rsvp-message').value.trim() || 'Heartiest congratulations to Deepika and Vikas!';
 
@@ -1244,9 +1269,10 @@
         }).catch(() => showToast('Could not save your RSVP. Please call the family to confirm.', 'error'));
       }
       rsvpForm.reset();
+      document.getElementById('rsvp-char-count').textContent = '0 / 300';
 
       // Show confirmation toast
-      showToast(`Thank you, ${name}! Your blessings and RSVP have been received with love. ✨`);
+      showToast(`Thank you, ${name}! Your blessing has reached Deepika & Vikas with love. 🙏`);
     });
 
     // -------------------------------------------------------------
