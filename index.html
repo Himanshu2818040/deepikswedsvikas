@@ -22,7 +22,7 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel+Decorative:wght@600;700;900&family=Cinzel:wght@500;600;700;800&family=Rozha+One&family=Yatra+One&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel+Decorative:wght@600;700;900&family=Cinzel:wght@500;600;700;800&family=Rozha+One&family=Yatra+One&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Noto+Serif+Devanagari:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;500;600&display=swap" rel="stylesheet">
 
   <script>
     tailwind.config = {
@@ -185,6 +185,26 @@
     @keyframes blessingPop { from { opacity: 0; transform: translateY(24px) scale(.96); } to { opacity: 1; transform: none; } }
     .blessing-pop { animation: blessingPop .35s ease-out; }
     #blessing-modal.open { display: flex; }
+    /* ===== Hindi mode: Devanagari fonts, no letter-spacing / forced caps ===== */
+    body.lang-hi, body.lang-hi .font-sans, body.lang-hi .font-mono { font-family: 'Noto Sans Devanagari', 'Plus Jakarta Sans', sans-serif; }
+    body.lang-hi .font-cinzel, body.lang-hi .font-decorative, body.lang-hi .font-script, body.lang-hi .font-shloka {
+      font-family: 'Noto Serif Devanagari', 'Rozha One', serif; font-style: normal;
+    }
+    body.lang-hi .font-script { font-weight: 700; }
+    body.lang-hi p.font-script { font-size: 1.4rem; font-weight: 600; }
+    body.lang-hi * { text-transform: none !important; letter-spacing: normal !important; }
+    body.lang-hi .italic { font-style: normal; }
+    body.lang-hi .font-mono { font-family: 'Plus Jakarta Sans', sans-serif; }
+    body.lang-hi .leading-relaxed, body.lang-hi p { line-height: 1.7; }
+    /* Devanagari matras sit above/left of the letter; give gradient-clipped text room so they are not cut off */
+    body.lang-hi h1, body.lang-hi h2, body.lang-hi h3, body.lang-hi h4 { line-height: 1.55; }
+    body.lang-hi .shimmer-gold, body.lang-hi .gold-gradient-text { display: inline-block; padding: .18em .08em .08em; line-height: 1.5; }
+
+    /* Language chooser */
+    @keyframes chooserIn { from { opacity: 0; transform: translateY(20px) scale(.97); } to { opacity: 1; transform: none; } }
+    .chooser-card { animation: chooserIn .7s ease-out both; }
+    .lang-btn { transition: transform .2s, box-shadow .2s, filter .2s; }
+    .lang-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 30px -8px rgba(212,175,55,.6); filter: brightness(1.1); }
     .om-glow { animation: omGlow 3s infinite ease-in-out; }
     .ring-l { animation: ringLeft 3s infinite ease-in-out; }
     .ring-r { animation: ringRight 3s infinite ease-in-out; }
@@ -208,6 +228,27 @@
 </head>
 <body class="bg-deepmaroon text-amber-50 font-sans min-h-screen relative overflow-x-hidden selection:bg-goldbase selection:text-deepmaroon">
 
+  <!-- ========================================== -->
+  <!-- 0. LANGUAGE CHOOSER (shown first)          -->
+  <!-- ========================================== -->
+  <div id="lang-chooser" data-no-i18n class="envelope-bg fixed inset-0 z-[90] flex items-center justify-center p-4 transition-opacity duration-500" role="dialog" aria-modal="true" aria-label="Choose language">
+    <div class="chooser-card relative w-full max-w-md bg-gradient-to-b from-royalmaroon via-deepmaroon to-royalmaroon border-2 border-goldbase rounded-3xl p-8 text-center gold-box-shadow">
+      <div class="mx-auto w-20 h-20 rounded-full border-2 border-goldbase/70 bg-royalmaroon flex items-center justify-center shadow-inner">
+        <span class="text-4xl text-goldlight om-glow">卐</span>
+      </div>
+      <p class="mt-4 text-sm text-goldlight" style="font-family:'Noto Serif Devanagari',serif">शुभ विवाह</p>
+      <h1 class="mt-1 text-3xl font-decorative shimmer-gold font-bold">Deepika &amp; Vikas</h1>
+      <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-goldbase to-transparent mx-auto my-4"></div>
+      <p class="text-xs uppercase tracking-[0.25em] text-amber-200/80 font-cinzel">Choose your language</p>
+      <p class="text-sm text-amber-200/80 mt-1" style="font-family:'Noto Serif Devanagari',serif">अपनी भाषा चुनें</p>
+      <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <button type="button" data-pick-lang="en" class="lang-btn py-3.5 px-4 bg-gradient-to-r from-golddark via-goldbase to-golddark text-deepmaroon font-cinzel font-bold text-sm tracking-widest uppercase rounded-full">English</button>
+        <button type="button" data-pick-lang="hi" class="lang-btn py-3.5 px-4 bg-gradient-to-r from-golddark via-goldbase to-golddark text-deepmaroon font-bold text-lg rounded-full" style="font-family:'Noto Serif Devanagari',serif">हिन्दी</button>
+      </div>
+    </div>
+  </div>
+
+
 
   <!-- Auspicious marigold toran -->
   <div class="toran-wrap fixed top-0 left-0 right-0 z-30 pointer-events-none" aria-hidden="true">
@@ -222,6 +263,11 @@
 
   <!-- Ambient Sound & Controls Toolbar -->
   <div id="ambient-controls" class="fixed top-4 right-4 z-[60] flex items-center gap-2">
+    <!-- Language Toggle -->
+    <button id="toggle-lang-btn" type="button" class="bg-royalmaroon/90 hover:bg-crimsonred border border-goldbase/60 text-goldlight px-3.5 py-2 rounded-full shadow-lg backdrop-blur-md transition-all duration-300 text-xs font-medium" aria-label="Change language">
+      <span id="lang-toggle-label" data-no-i18n>हिन्दी</span>
+    </button>
+
     <!-- Music Button -->
     <button id="toggle-audio-btn" type="button" class="group flex items-center gap-2 bg-royalmaroon/90 hover:bg-crimsonred border border-goldbase/60 text-goldlight px-3.5 py-2 rounded-full shadow-lg backdrop-blur-md transition-all duration-300">
       <span id="audio-icon-wrap" class="relative flex h-3 w-3">
@@ -797,6 +843,8 @@
   <!-- TOAST NOTIFICATION CONTAINER -->
   <div id="toast-container" class="fixed bottom-5 right-5 z-[70] flex flex-col gap-2 pointer-events-none"></div>
 
+  <script src="i18n.js"></script>
+
   <!-- JAVASCRIPT LOGIC -->
   <script>
     // -------------------------------------------------------------
@@ -872,7 +920,7 @@
       envelopeScreen.classList.add('opacity-0', 'pointer-events-none');
       setTimeout(() => {
         envelopeScreen.style.display = 'none';
-        showToast(guestName ? `Welcome ${guestName}! May this celebration bring you joy. ✨` : 'Welcome! May this celebration bring you joy. ✨');
+        showToast(guestName ? T('Welcome {name}! May this celebration bring you joy. ✨', { name: guestName }) : T('Welcome! May this celebration bring you joy. ✨'));
       }, 700);
     });
 
@@ -908,37 +956,58 @@
     // -------------------------------------------------------------
     // 6. ADD TO CALENDAR (.ICS GENERATOR)
     // -------------------------------------------------------------
-    const EVENT_TITLE = 'Deepika weds Vikas - Wedding';
-    const EVENT_DESC = 'Wedding of Deepika (D/o Anita Rani & Krishan Kumar Saini) and Vikas (S/o Seema Devi & Dharambir Saini). Mandha (10 AM), Barat (11 AM), Lunch (12 Noon), Doli (5 PM).';
-    const EVENT_LOCATION = 'Celebration Farm, Ambala Road, Kaithal, Haryana';
+    // Event text follows the chosen language (refreshed on every language change)
+    let EVENT_TITLE, EVENT_DESC, EVENT_LOCATION;
     const EVENT_START = '20261120T043000Z'; // 10:00 AM IST
     const EVENT_END = '20261120T123000Z';   // 6:00 PM IST
 
     // Google Calendar link (works on every device)
     const gcalLink = document.getElementById('add-gcal-link');
-    if (gcalLink) {
-      gcalLink.href = 'https://calendar.google.com/calendar/render?' + new URLSearchParams({
-        action: 'TEMPLATE',
-        text: EVENT_TITLE,
-        dates: EVENT_START + '/' + EVENT_END,
-        details: EVENT_DESC,
-        location: EVENT_LOCATION
-      }).toString();
+    function refreshEventText() {
+      EVENT_TITLE = T('Deepika weds Vikas - Wedding');
+      EVENT_DESC = T('Wedding of Deepika (D/o Anita Rani & Krishan Kumar Saini) and Vikas (S/o Seema Devi & Dharambir Saini). Mandha (10 AM), Barat (11 AM), Lunch (12 Noon), Doli (5 PM).');
+      EVENT_LOCATION = T('Celebration Farm, Ambala Road, Kaithal, Haryana');
+      if (gcalLink) {
+        gcalLink.href = 'https://calendar.google.com/calendar/render?' + new URLSearchParams({
+          action: 'TEMPLATE',
+          text: EVENT_TITLE,
+          dates: EVENT_START + '/' + EVENT_END,
+          details: EVENT_DESC,
+          location: EVENT_LOCATION
+        }).toString();
+      }
     }
+    refreshEventText();
+    document.addEventListener('langchange', () => {
+      refreshEventText();
+      // Keep the music button label in step with the language and playing state
+      audioText.textContent = isAudioPlaying ? T('Mute Song') : T('Play Song');
+    });
 
     function icsEscape(t) {
       return t.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
     }
 
-    // Fold lines longer than 75 octets as required by RFC 5545
+    // Fold lines longer than 75 octets as required by RFC 5545 (counted in UTF-8 bytes)
     function icsFold(line) {
-      const out = [];
-      while (line.length > 74) {
-        out.push(line.slice(0, 74));
-        line = ' ' + line.slice(74);
+      const enc = new TextEncoder();
+      const parts = [];
+      let current = '';
+      let bytes = 0;
+      let limit = 75;
+      for (const ch of line) {
+        const size = enc.encode(ch).length;
+        if (bytes + size > limit) {
+          parts.push(current);
+          current = ' ';
+          bytes = 1;
+          limit = 75;
+        }
+        current += ch;
+        bytes += size;
       }
-      out.push(line);
-      return out.join('\r\n');
+      parts.push(current);
+      return parts.join('\r\n');
     }
 
     addCalendarBtn.addEventListener('click', () => {
@@ -961,7 +1030,7 @@
         'BEGIN:VALARM',
         'TRIGGER:-P1D',
         'ACTION:DISPLAY',
-        'DESCRIPTION:Deepika weds Vikas tomorrow',
+        'DESCRIPTION:' + icsEscape(T('Deepika weds Vikas tomorrow')),
         'END:VALARM',
         'END:VEVENT',
         'END:VCALENDAR'
@@ -977,7 +1046,7 @@
       document.body.removeChild(a);
       setTimeout(() => URL.revokeObjectURL(url), 10000);
 
-      showToast('Calendar file downloaded. Open it to add the wedding to your calendar!');
+      showToast(T('Calendar file downloaded. Open it to add the wedding to your calendar!'));
     });
 
     // -------------------------------------------------------------
@@ -999,30 +1068,30 @@
       if (playing && playing.catch) {
         playing.catch(() => {
           isAudioPlaying = false;
-          audioText.textContent = 'Play Song';
+          audioText.textContent = T('Play Song');
           audioPing.classList.add('hidden');
-          showToast('Could not play the song. Tap the music button to try again.');
+          showToast(T('Could not play the song. Tap the music button to try again.'));
         });
       }
       isAudioPlaying = true;
-      audioText.textContent = 'Mute Song';
+      audioText.textContent = T('Mute Song');
       audioPing.classList.remove('hidden');
     }
 
     function stopWeddingMusic() {
       weddingSong.pause();
       isAudioPlaying = false;
-      audioText.textContent = 'Play Song';
+      audioText.textContent = T('Play Song');
       audioPing.classList.add('hidden');
     }
 
     toggleAudioBtn.addEventListener('click', () => {
       if (isAudioPlaying) {
         stopWeddingMusic();
-        showToast('Song muted');
+        showToast(T('Song muted'));
       } else {
         startWeddingMusic();
-        showToast('Playing wedding song 🎵');
+        showToast(T('Playing wedding song 🎵'));
       }
     });
 
@@ -1076,14 +1145,14 @@
           method: 'POST',
           mode: 'no-cors',
           body: new URLSearchParams({ name, contact: phone, attendance, message, invitedAs: guestName })
-        }).catch(() => showToast('Could not save your RSVP. Please call the family to confirm.', 'error'));
+        }).catch(() => showToast(T('Could not save your RSVP. Please call the family to confirm.'), 'error'));
       }
       rsvpForm.reset();
       closeBlessingModal();
       document.getElementById('rsvp-char-count').textContent = '0 / 300';
 
       // Show confirmation toast
-      showToast(`Thank you, ${name}! Your blessing has reached Deepika & Vikas with love. 🙏`);
+      showToast(T('Thank you, {name}! Your blessing has reached Deepika & Vikas with love. 🙏', { name }));
     });
 
     // -------------------------------------------------------------

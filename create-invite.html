@@ -13,6 +13,7 @@
     h1 { margin: 0 0 4px; text-align: center; color: #F5E084; font-size: 24px; }
     p.sub { margin: 0 0 22px; text-align: center; font-size: 13px; color: rgba(255,249,230,.7); font-style: italic; }
     label { display: block; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #E6C265; margin-bottom: 6px; }
+    select { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(212,175,55,.5); background: #2C060B; color: #FFF9E6; font-size: 16px; font-family: inherit; }
     input, textarea { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(212,175,55,.5); background: #2C060B; color: #FFF9E6; font-size: 16px; font-family: inherit; }
     textarea { resize: vertical; min-height: 130px; line-height: 1.45; font-size: 14px; }
     .field { margin-top: 16px; }
@@ -33,6 +34,16 @@
 
     <label for="name">Guest / Family Name</label>
     <input id="name" type="text" maxlength="60" placeholder="e.g. Sharma Family" autocomplete="off">
+
+    <div class="field">
+      <label for="lang">Invitation Language</label>
+      <select id="lang">
+        <option value="">Let the guest choose</option>
+        <option value="en">English</option>
+        <option value="hi">हिन्दी (Hindi)</option>
+      </select>
+      <div class="hint">Picking a language opens the invitation straight in it, with no language question. The message below switches too.</div>
+    </div>
 
     <div class="field">
       <label for="phone">WhatsApp Number (optional)</label>
@@ -79,11 +90,26 @@
       '',
       'Your presence and blessings will make our day complete ❤'
     ].join('\n');
+    const DEFAULT_MESSAGE_HI = [
+      'प्रिय {name},',
+      '',
+      'हमारे बड़ों के आशीर्वाद से, हम आपको दीपिका और विकास के शुभ विवाह में सादर आमंत्रित करते हैं \u2728',
+      'शुक्रवार, 20 नवंबर 2026 \u2022 कैथल, हरियाणा',
+      '',
+      'आपका निजी निमंत्रण:',
+      '{link}',
+      '',
+      'आपकी उपस्थिति और आशीर्वाद से हमारा दिन पूर्ण होगा \u2764'
+    ].join('\n');
+    const langSelect = document.getElementById('lang');
+
     try { msgText.value = localStorage.getItem('invite-msg') || DEFAULT_MESSAGE; } catch (e) { msgText.value = DEFAULT_MESSAGE; }
 
     function personalLink(name) {
       const u = new URL(base.href);
-      u.search = new URLSearchParams({ to: name }).toString();
+      const params = { to: name };
+      if (langSelect.value) params.lang = langSelect.value;
+      u.search = new URLSearchParams(params).toString();
       return u.toString();
     }
 
@@ -119,6 +145,16 @@
     }
 
     [input, phoneInput].forEach(el => el.addEventListener('input', refresh));
+
+    // Switch the message to the chosen language, but never overwrite text the user edited
+    langSelect.addEventListener('change', () => {
+      const untouched = msgText.value === DEFAULT_MESSAGE || msgText.value === DEFAULT_MESSAGE_HI;
+      if (untouched) {
+        msgText.value = langSelect.value === 'hi' ? DEFAULT_MESSAGE_HI : DEFAULT_MESSAGE;
+        try { localStorage.setItem('invite-msg', msgText.value); } catch (e) {}
+      }
+      refresh();
+    });
     msgText.addEventListener('input', () => {
       try { localStorage.setItem('invite-msg', msgText.value); } catch (e) {}
       refresh();
