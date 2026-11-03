@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Create Guest Invite | Deepika weds Vikas</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px; font-family: Georgia, 'Times New Roman', serif; color: #FFF9E6;
+      background: linear-gradient(135deg, #2C060B 0%, #5A0F1C 40%, #7B1123 70%, #3A0710 100%); }
+    .card { width: 100%; max-width: 480px; background: #4A0E17; border: 2px solid #D4AF37; border-radius: 20px; padding: 28px 22px; box-shadow: 0 10px 40px rgba(0,0,0,.5); }
+    h1 { margin: 0 0 4px; text-align: center; color: #F5E084; font-size: 24px; }
+    p.sub { margin: 0 0 22px; text-align: center; font-size: 13px; color: rgba(255,249,230,.7); font-style: italic; }
+    label { display: block; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #E6C265; margin-bottom: 6px; }
+    input { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(212,175,55,.5); background: #2C060B; color: #FFF9E6; font-size: 16px; font-family: inherit; }
+    input:focus { outline: none; border-color: #F5E084; }
+    .out { margin-top: 18px; padding: 12px; border-radius: 12px; background: rgba(0,0,0,.35); border: 1px dashed rgba(212,175,55,.5); font-size: 12px; word-break: break-all; color: #F5E084; min-height: 44px; }
+    .row { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+    button, a.btn { flex: 1; min-width: 130px; text-align: center; text-decoration: none; padding: 12px; border: 0; border-radius: 999px; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; font-family: inherit;
+      background: linear-gradient(90deg, #99731C, #D4AF37, #99731C); color: #2C060B; }
+    button:disabled, a.btn.off { opacity: .4; pointer-events: none; }
+    .ok { text-align: center; font-size: 12px; color: #9be28f; height: 16px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Create a Personal Invite</h1>
+    <p class="sub">Type a guest or family name and get their own invitation link.</p>
+
+    <label for="name">Guest / Family Name</label>
+    <input id="name" type="text" maxlength="60" placeholder="e.g. Sharma Family" autocomplete="off">
+
+    <div class="out" id="link">Your link will appear here</div>
+
+    <div class="row">
+      <button id="copy" type="button" disabled>Copy Link</button>
+      <a id="wa" class="btn off" href="#" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+    </div>
+    <div class="ok" id="msg"></div>
+  </div>
+
+  <script>
+    // Link points at the invitation page that sits next to this file
+    const base = new URL('index.html', window.location.href);
+    base.pathname = base.pathname.replace(/index\.html$/, '');
+    const input = document.getElementById('name');
+    const out = document.getElementById('link');
+    const copyBtn = document.getElementById('copy');
+    const wa = document.getElementById('wa');
+    const msg = document.getElementById('msg');
+    let current = '';
+
+    input.addEventListener('input', () => {
+      const name = input.value.trim();
+      msg.textContent = '';
+      if (!name) {
+        current = '';
+        out.textContent = 'Your link will appear here';
+        copyBtn.disabled = true;
+        wa.classList.add('off');
+        return;
+      }
+      const u = new URL(base.href);
+      u.search = new URLSearchParams({ to: name }).toString();
+      current = u.toString();
+      out.textContent = current;
+      copyBtn.disabled = false;
+      wa.classList.remove('off');
+      wa.href = 'https://wa.me/?text=' + encodeURIComponent('You are warmly invited to the wedding of Deepika & Vikas 🙏\n' + current);
+    });
+
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(current);
+        msg.textContent = 'Link copied!';
+      } catch (e) {
+        window.prompt('Copy this link:', current);
+      }
+    });
+  </script>
+</body>
+</html>

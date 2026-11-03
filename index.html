@@ -280,11 +280,8 @@
 
         <!-- Personalized Guest Recipient Box -->
         <div class="my-6 bg-deepmaroon/80 border border-goldbase/40 rounded-xl p-4 text-center">
-          <p class="text-xs font-cinzel text-amber-200/70 tracking-wider mb-1">WITH CORDIAL RESPECTS TO</p>
-          <div class="flex items-center justify-center gap-2">
-            <span class="text-lg text-goldlight font-script">To,</span>
-            <input id="guest-name-input" type="text" value="Respected Family & Friends" placeholder="Enter Guest Name..." class="bg-transparent border-b border-goldbase/60 text-center font-cinzel text-lg sm:text-xl text-amber-100 placeholder-amber-100/30 focus:outline-none focus:border-goldlight px-2 py-1 w-full max-w-xs transition-colors">
-          </div>
+          <p class="text-xs font-cinzel text-amber-200/70 tracking-wider mb-1">A SPECIAL INVITATION FOR</p>
+          <p id="envelope-guest" class="text-2xl sm:text-3xl font-cinzel text-amber-100 border-b border-goldbase/40 pb-1 inline-block px-4">You</p>
         </div>
 
         <!-- Open Invitation Button -->
@@ -429,10 +426,10 @@
       </div>
 
       <!-- Personalized Greeting Banner -->
-      <div class="mt-8 pt-6 border-t border-goldbase/30">
-        <p class="text-xs font-cinzel uppercase text-goldbase tracking-widest">Cordially Addressed To</p>
+      <div id="guest-banner" class="hidden mt-8 pt-6 border-t border-goldbase/30">
+        <p class="text-xs font-cinzel uppercase text-goldbase tracking-widest">With Love, Especially For</p>
         <p id="card-personalized-guest" class="text-2xl sm:text-3xl font-script text-goldlight mt-1">
-          Respected Family &amp; Friends
+          Dear Guest
         </p>
       </div>
 
@@ -804,7 +801,6 @@
     // -------------------------------------------------------------
     const envelopeScreen = document.getElementById('envelope-screen');
     const openEnvelopeBtn = document.getElementById('open-envelope-btn');
-    const guestNameInput = document.getElementById('guest-name-input');
     const cardPersonalizedGuest = document.getElementById('card-personalized-guest');
     const toggleAudioBtn = document.getElementById('toggle-audio-btn');
     const audioText = document.getElementById('audio-text');
@@ -841,19 +837,20 @@
     // -------------------------------------------------------------
     // 4. ENVELOPE OPENING & GUEST PERSONALIZATION
     // -------------------------------------------------------------
-    function updateGuestName(name) {
-      const clean = name.trim() || 'Respected Family & Friends';
-      cardPersonalizedGuest.textContent = clean;
+    // Personal links: ?to=Sharma+Family addresses the invitation to that guest.
+    // Without it, the invitation simply says "A special invitation for You".
+    let guestName = '';
+    try {
+      guestName = (new URLSearchParams(window.location.search).get('to') || '').trim().slice(0, 60);
+    } catch (e) {}
+
+    if (guestName) {
+      document.getElementById('envelope-guest').textContent = guestName;
+      cardPersonalizedGuest.textContent = guestName;
+      document.getElementById('guest-banner').classList.remove('hidden');
     }
 
-    guestNameInput.addEventListener('input', (e) => {
-      updateGuestName(e.target.value);
-    });
-
     openEnvelopeBtn.addEventListener('click', () => {
-      const guestName = guestNameInput.value.trim() || 'Respected Family & Friends';
-      updateGuestName(guestName);
-      
       // Start the wedding song on first interaction (browsers require a click)
       if (!isAudioPlaying) {
         startWeddingMusic();
@@ -863,7 +860,7 @@
       envelopeScreen.classList.add('opacity-0', 'pointer-events-none');
       setTimeout(() => {
         envelopeScreen.style.display = 'none';
-        showToast(`Welcome ${guestName}! May this celebration bring you joy. ✨`);
+        showToast(guestName ? `Welcome ${guestName}! May this celebration bring you joy. ✨` : 'Welcome! May this celebration bring you joy. ✨');
       }, 700);
     });
 
@@ -1040,7 +1037,9 @@
       blessingModal.classList.add('open');
       blessingModal.classList.remove('hidden');
       document.body.style.overflow = 'hidden';
-      setTimeout(() => document.getElementById('rsvp-guest-name').focus(), 150);
+      const nameField = document.getElementById('rsvp-guest-name');
+      if (!nameField.value.trim()) nameField.value = guestName;
+      setTimeout(() => nameField.focus(), 150);
     }
     function closeBlessingModal() {
       blessingModal.classList.remove('open');
@@ -1064,7 +1063,7 @@
         fetch(RSVP_ENDPOINT, {
           method: 'POST',
           mode: 'no-cors',
-          body: new URLSearchParams({ name, contact: phone, attendance, message, invitedAs: guestNameInput.value.trim() })
+          body: new URLSearchParams({ name, contact: phone, attendance, message, invitedAs: guestName })
         }).catch(() => showToast('Could not save your RSVP. Please call the family to confirm.', 'error'));
       }
       rsvpForm.reset();
