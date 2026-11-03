@@ -154,6 +154,25 @@
     .couple-zoom { animation: coupleZoom 14s ease-in-out infinite; }
     .blessing-chip { font-size: 11px; font-family: 'Plus Jakarta Sans', sans-serif; padding: 6px 12px; border-radius: 9999px; border: 1px solid rgba(212,175,55,.5); background: rgba(212,175,55,.12); color: #F5E084; transition: all .2s; }
     .blessing-chip:hover { background: rgba(212,175,55,.3); transform: translateY(-1px); }
+    /* Festive envelope-screen backdrop */
+    @keyframes festiveShift { 0% { background-position: 0% 50%, 100% 0%, 50% 100%, 0 0; } 50% { background-position: 100% 50%, 0% 100%, 50% 0%, 0 0; } 100% { background-position: 0% 50%, 100% 0%, 50% 100%, 0 0; } }
+    .envelope-bg {
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,159,28,.45) 0%, transparent 45%),
+        radial-gradient(circle at 80% 15%, rgba(230,57,70,.40) 0%, transparent 45%),
+        radial-gradient(circle at 50% 100%, rgba(212,175,55,.40) 0%, transparent 50%),
+        linear-gradient(135deg, #2C060B 0%, #5A0F1C 35%, #7B1123 60%, #3A0710 100%);
+      background-size: 200% 200%, 200% 200%, 200% 200%, 100% 100%;
+      animation: festiveShift 16s ease-in-out infinite;
+    }
+    .envelope-bg::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .18;
+      background-image: radial-gradient(#F5E084 1px, transparent 1.5px);
+      background-size: 28px 28px;
+    }
+    @keyframes blessingPop { from { opacity: 0; transform: translateY(24px) scale(.96); } to { opacity: 1; transform: none; } }
+    .blessing-pop { animation: blessingPop .35s ease-out; }
+    #blessing-modal.open { display: flex; }
     .om-glow { animation: omGlow 3s infinite ease-in-out; }
     .ring-l { animation: ringLeft 3s infinite ease-in-out; }
     .ring-r { animation: ringRight 3s infinite ease-in-out; }
@@ -169,7 +188,7 @@
     .stagger.reveal-in > *:nth-child(3) { transition-delay: .4s; }
 
     @media (prefers-reduced-motion: reduce) {
-      .mandala-spin, .toran, .toran-bead, .diya-flame, .diya-halo, .shimmer-gold, .om-glow, .ring-l, .ring-r, .lantern, .sparkle, .couple-zoom { animation: none !important; }
+      .mandala-spin, .toran, .toran-bead, .diya-flame, .diya-halo, .shimmer-gold, .om-glow, .ring-l, .ring-r, .lantern, .sparkle, .couple-zoom, .envelope-bg { animation: none !important; }
       .reveal, .stagger > * { opacity: 1 !important; transform: none !important; transition: none !important; }
     }
     @media print { .toran-wrap, .lantern, .mandala-bg { display: none !important; } .reveal, .stagger > * { opacity: 1 !important; transform: none !important; } }
@@ -224,7 +243,7 @@
   <!-- ========================================== -->
   <!-- 1. ROYAL ENVELOPE OPENING MODAL / OVERLAY -->
   <!-- ========================================== -->
-  <div id="envelope-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md transition-opacity duration-700">
+  <div id="envelope-screen" class="envelope-bg fixed inset-0 z-50 flex items-center justify-center p-4 transition-opacity duration-700">
     <div class="relative w-full max-w-lg mx-auto">
       
       <!-- Envelope Container -->
@@ -696,7 +715,39 @@
           <p class="text-xs sm:text-sm text-amber-200/80 font-sans italic">Your blessing is the most precious gift for Deepika &amp; Vikas as they begin their new journey together.</p>
         </div>
 
-        <form id="rsvp-form" class="relative space-y-4">
+        <div class="relative text-center">
+          <button id="open-blessing-btn" type="button" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-gradient-to-r from-golddark via-goldbase to-golddark text-deepmaroon font-cinzel font-bold text-xs uppercase tracking-widest rounded-full hover:brightness-110 active:scale-[.98] transition-all shadow-lg">
+            🌸 Send My Blessings 🌸
+          </button>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- FOOTER WITH PRINTER ATTRIBUTION FROM ORIGINAL CARD -->
+    <footer class="text-center pt-6 pb-12 border-t border-goldbase/20 text-xs font-cinzel text-amber-200/60 space-y-2">
+      <p class="tracking-widest uppercase text-amber-100">Deepika &amp; Vikas Wedding Invitation</p>
+      <p class="text-[11px] font-sans">Friday, 20th November 2026 • Kaithal, Haryana</p>
+      <div class="pt-3 max-w-md mx-auto font-sans text-[11px] text-amber-200/70 leading-relaxed">
+        <p>Lovingly coded, with zero bugs and unlimited <span class="text-goldlight">mithai</span>, by the bride's proud brother</p>
+        <p class="font-script text-2xl text-goldlight mt-1">Himanshu Saini</p>
+        <p class="italic">Software Developer &bull; Part-time Wedding Website Wizard &bull; Full-time Bhai 💛</p>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- BLESSINGS FORM MODAL -->
+  <div id="blessing-modal" class="hidden fixed inset-0 z-[65] items-center justify-center p-4 bg-black/75 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="blessing-modal-title">
+    <div class="relative w-full max-w-lg max-h-[92vh] overflow-y-auto bg-gradient-to-b from-royalmaroon to-deepmaroon border-2 border-goldbase rounded-3xl p-6 sm:p-8 gold-box-shadow blessing-pop">
+      <button id="close-blessing-btn" type="button" class="absolute top-3 right-3 w-9 h-9 rounded-full border border-goldbase/60 text-goldlight hover:bg-crimsonred transition-colors" aria-label="Close">&times;</button>
+      <div class="text-center mb-5">
+        <div class="mx-auto w-12 h-12 rounded-full border-2 border-goldbase bg-royalmaroon flex items-center justify-center text-2xl om-glow" aria-hidden="true">🙏</div>
+        <h3 id="blessing-modal-title" class="mt-2 text-xl sm:text-2xl font-decorative font-bold shimmer-gold">Give Your Special Blessing</h3>
+        <p class="text-xs text-amber-200/70 font-sans italic mt-1">For Deepika &amp; Vikas</p>
+      </div>
+        <form id="rsvp-form" class="space-y-4">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label for="rsvp-guest-name" class="block text-xs font-cinzel text-amber-200 mb-1">Your Name</label>
@@ -736,34 +787,11 @@
           </div>
 
           <button id="rsvp-submit-btn" type="submit" class="w-full py-3.5 bg-gradient-to-r from-golddark via-goldbase to-golddark text-deepmaroon font-cinzel font-bold text-xs uppercase tracking-widest rounded-xl hover:brightness-110 active:scale-[.98] transition-all">
-            🌸 Send My Blessings 🌸
+            🌸 Send Blessings 🌸
           </button>
         </form>
-
-        <!-- Live Blessings Board -->
-        <div class="mt-8 pt-6 border-t border-goldbase/30">
-          <h4 class="text-xs uppercase font-cinzel tracking-widest text-goldbase text-center mb-4">Blessings Received from Friends &amp; Family</h4>
-          <div id="blessings-list" class="space-y-3 max-h-60 overflow-y-auto pr-1">
-            <!-- Dynamically populated -->
-          </div>
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- FOOTER WITH PRINTER ATTRIBUTION FROM ORIGINAL CARD -->
-    <footer class="text-center pt-6 pb-12 border-t border-goldbase/20 text-xs font-cinzel text-amber-200/60 space-y-2">
-      <p class="tracking-widest uppercase text-amber-100">Deepika &amp; Vikas Wedding Invitation</p>
-      <p class="text-[11px] font-sans">Friday, 20th November 2026 • Kaithal, Haryana</p>
-      <div class="pt-3 max-w-md mx-auto font-sans text-[11px] text-amber-200/70 leading-relaxed">
-        <p>Lovingly coded, with zero bugs and unlimited <span class="text-goldlight">mithai</span>, by the bride's proud brother</p>
-        <p class="font-script text-2xl text-goldlight mt-1">Himanshu Saini</p>
-        <p class="italic">Software Developer &bull; Part-time Wedding Website Wizard &bull; Full-time Bhai 💛</p>
-      </div>
-    </footer>
-
-  </main>
+    </div>
+  </div>
 
   <!-- TOAST NOTIFICATION CONTAINER -->
   <div id="toast-container" class="fixed bottom-5 right-5 z-[70] flex flex-col gap-2 pointer-events-none"></div>
@@ -782,28 +810,6 @@
     // Paste your Google Apps Script web-app URL here (see RSVP-SETUP.txt). Leave empty to disable saving.
     const RSVP_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxIryrf7qcldI89Wvs1NlH-1bXs69eZ6ftTBNTtWKh4EyH5-xowKFdaenbmKsEMqsiFjA/exec';
 
-    // Default Blessings
-    const initialBlessings = [
-      {
-        name: "Shyam Lal & Family",
-        relation: "Kaithal",
-        attendance: "Relative",
-        message: "Heartiest congratulations to our beloved Deepika and Vikas. May Lord Ganesha bless you both with lifelong joy and prosperity!"
-      },
-      {
-        name: "Harish Saini",
-        relation: "Kaithal",
-        attendance: "Friend",
-        message: "Wishing Deepika & Vikas a very happy married life filled with laughter, love, and sweet memories!"
-      },
-      {
-        name: "Kohar Family Relatives",
-        relation: "Haryana",
-        attendance: "Family",
-        message: "Congratulations to Anita Bhabhi and Krishan Kumar ji on Deepika's wedding. We are looking forward to the grand celebration!"
-      }
-    ];
-
     // -------------------------------------------------------------
     // 2. DOM ELEMENTS
     // -------------------------------------------------------------
@@ -818,7 +824,6 @@
     const printInviteBtn = document.getElementById('print-invite-btn');
     const addCalendarBtn = document.getElementById('add-calendar-btn');
     const rsvpForm = document.getElementById('rsvp-form');
-    const blessingsList = document.getElementById('blessings-list');
     const toastContainer = document.getElementById('toast-container');
 
     // -------------------------------------------------------------
@@ -1207,28 +1212,6 @@
     // -------------------------------------------------------------
     // 10. BLESSINGS / RSVP FORM & GUESTBOOK
     // -------------------------------------------------------------
-    function esc(str) {
-      return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-    }
-
-    function renderBlessings() {
-      blessingsList.innerHTML = '';
-      initialBlessings.forEach(b => {
-        const item = document.createElement('div');
-        item.className = 'p-3 bg-royalmaroon/40 border border-goldbase/20 rounded-xl';
-        item.innerHTML = `
-          <div class="flex items-center justify-between mb-1">
-            <span class="font-cinzel text-xs font-bold text-goldlight">${esc(b.name)}</span>
-            <span class="text-[10px] text-amber-300/70 font-sans">${esc(b.relation || '')} • ${esc(b.attendance)}</span>
-          </div>
-          <p class="text-xs text-amber-100 italic font-sans">"${esc(b.message)}"</p>
-        `;
-        blessingsList.appendChild(item);
-      });
-    }
-
-    renderBlessings();
-
     // Quick-pick blessing chips + live character counter
     const rsvpMessage = document.getElementById('rsvp-message');
     const rsvpCharCount = document.getElementById('rsvp-char-count');
@@ -1243,22 +1226,30 @@
       rsvpMessage.focus();
     });
 
+    // Blessing form modal
+    const blessingModal = document.getElementById('blessing-modal');
+    function openBlessingModal() {
+      blessingModal.classList.add('open');
+      blessingModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => document.getElementById('rsvp-guest-name').focus(), 150);
+    }
+    function closeBlessingModal() {
+      blessingModal.classList.remove('open');
+      blessingModal.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+    document.getElementById('open-blessing-btn').addEventListener('click', openBlessingModal);
+    document.getElementById('close-blessing-btn').addEventListener('click', closeBlessingModal);
+    blessingModal.addEventListener('click', (e) => { if (e.target === blessingModal) closeBlessingModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeBlessingModal(); });
+
     rsvpForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const name = document.getElementById('rsvp-guest-name').value.trim();
       const phone = document.getElementById('rsvp-phone').value.trim() || 'Kaithal';
       const attendance = document.getElementById('rsvp-attendance').value;
       const message = document.getElementById('rsvp-message').value.trim() || 'Heartiest congratulations to Deepika and Vikas!';
-
-      // Prepend to blessings
-      initialBlessings.unshift({
-        name: name,
-        relation: phone,
-        attendance: attendance,
-        message: message
-      });
-
-      renderBlessings();
 
       // Save to Google Sheet (fire-and-forget; Apps Script does not return CORS headers)
       if (RSVP_ENDPOINT) {
@@ -1269,6 +1260,7 @@
         }).catch(() => showToast('Could not save your RSVP. Please call the family to confirm.', 'error'));
       }
       rsvpForm.reset();
+      closeBlessingModal();
       document.getElementById('rsvp-char-count').textContent = '0 / 300';
 
       // Show confirmation toast
