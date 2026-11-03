@@ -190,7 +190,7 @@
   <canvas id="petals-canvas" class="fixed inset-0 pointer-events-none z-20"></canvas>
 
   <!-- Ambient Sound & Controls Toolbar -->
-  <div id="ambient-controls" class="fixed top-4 right-4 z-40 flex items-center gap-2">
+  <div id="ambient-controls" class="fixed top-4 right-4 z-[60] flex items-center gap-2">
     <!-- Music Button -->
     <button id="toggle-audio-btn" type="button" class="group flex items-center gap-2 bg-royalmaroon/90 hover:bg-crimsonred border border-goldbase/60 text-goldlight px-3.5 py-2 rounded-full shadow-lg backdrop-blur-md transition-all duration-300">
       <span id="audio-icon-wrap" class="relative flex h-3 w-3">
@@ -445,12 +445,16 @@
         </div>
         
         <!-- Add to Calendar Button -->
-        <div class="mt-4 flex justify-center">
+        <div class="mt-4 flex flex-wrap justify-center gap-2">
+          <a id="add-gcal-link" href="https://calendar.google.com/calendar/render?action=TEMPLATE" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 bg-goldbase/20 hover:bg-goldbase/30 border border-goldbase text-goldlight text-xs font-cinzel tracking-wider rounded-full transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <span>Add to Google Calendar</span>
+          </a>
           <button id="add-calendar-btn" type="button" class="inline-flex items-center gap-2 px-4 py-2 bg-goldbase/20 hover:bg-goldbase/30 border border-goldbase text-goldlight text-xs font-cinzel tracking-wider rounded-full transition-colors">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
             </svg>
-            <span>Add Wedding to Calendar (.ics)</span>
+            <span>Apple / Outlook (.ics)</span>
           </button>
         </div>
       </div>
@@ -741,15 +745,17 @@
     <footer class="text-center pt-6 pb-12 border-t border-goldbase/20 text-xs font-cinzel text-amber-200/60 space-y-2">
       <p class="tracking-widest uppercase text-amber-100">Deepika &amp; Vikas Wedding Invitation</p>
       <p class="text-[11px] font-sans">Friday, 20th November 2026 • Kaithal, Haryana</p>
-      <div class="pt-2 text-[10px] text-amber-300/40 font-mono">
-        Original card designed by Akshar Printer (# 90349-56075) • Digitally Re-imagined with Royal Animations
+      <div class="pt-3 max-w-md mx-auto font-sans text-[11px] text-amber-200/70 leading-relaxed">
+        <p>Lovingly coded, with zero bugs and unlimited <span class="text-goldlight">mithai</span>, by the bride's proud brother</p>
+        <p class="font-script text-2xl text-goldlight mt-1">Himanshu Saini</p>
+        <p class="italic">Software Developer &bull; Part-time Wedding Website Wizard &bull; Full-time Bhai 💛</p>
       </div>
     </footer>
 
   </main>
 
   <!-- TOAST NOTIFICATION CONTAINER -->
-  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+  <div id="toast-container" class="fixed bottom-5 right-5 z-[70] flex flex-col gap-2 pointer-events-none"></div>
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
@@ -892,7 +898,41 @@
     // -------------------------------------------------------------
     // 6. ADD TO CALENDAR (.ICS GENERATOR)
     // -------------------------------------------------------------
+    const EVENT_TITLE = 'Deepika weds Vikas - Wedding';
+    const EVENT_DESC = 'Wedding of Deepika (D/o Anita Rani & Krishan Kumar Saini) and Vikas (S/o Seema Devi & Dharambir Saini). Mandha (10 AM), Barat (11 AM), Lunch (12 Noon), Doli (5 PM).';
+    const EVENT_LOCATION = 'Celebration Farm, Ambala Road, Kaithal, Haryana';
+    const EVENT_START = '20261120T043000Z'; // 10:00 AM IST
+    const EVENT_END = '20261120T123000Z';   // 6:00 PM IST
+
+    // Google Calendar link (works on every device)
+    const gcalLink = document.getElementById('add-gcal-link');
+    if (gcalLink) {
+      gcalLink.href = 'https://calendar.google.com/calendar/render?' + new URLSearchParams({
+        action: 'TEMPLATE',
+        text: EVENT_TITLE,
+        dates: EVENT_START + '/' + EVENT_END,
+        details: EVENT_DESC,
+        location: EVENT_LOCATION
+      }).toString();
+    }
+
+    function icsEscape(t) {
+      return t.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
+    }
+
+    // Fold lines longer than 75 octets as required by RFC 5545
+    function icsFold(line) {
+      const out = [];
+      while (line.length > 74) {
+        out.push(line.slice(0, 74));
+        line = ' ' + line.slice(74);
+      }
+      out.push(line);
+      return out.join('\r\n');
+    }
+
     addCalendarBtn.addEventListener('click', () => {
+      const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
       const icsData = [
         'BEGIN:VCALENDAR',
         'VERSION:2.0',
@@ -901,27 +941,33 @@
         'METHOD:PUBLISH',
         'BEGIN:VEVENT',
         'UID:deepika-vikas-wedding-2026@kaithal',
-        'SUMMARY:Deepika weds Vikas - Royal Hindu Wedding',
-        'DESCRIPTION:Wedding of Deepika (D/o Anita Rani & Krishan Kumar Saini) and Vikas (S/o Seema Devi & Dharambir Saini). Ceremonies include Mandha (10 AM), Barat (11 AM), Lunch (12 Noon), Doli (5 PM).',
-        'LOCATION:Celebration Farm, Ambala Road, Kaithal, Haryana',
-        'DTSTART:20261120T043000Z',
-        'DTEND:20261120T123000Z',
+        'DTSTAMP:' + stamp,
+        'SUMMARY:' + icsEscape(EVENT_TITLE),
+        'DESCRIPTION:' + icsEscape(EVENT_DESC),
+        'LOCATION:' + icsEscape(EVENT_LOCATION),
+        'DTSTART:' + EVENT_START,
+        'DTEND:' + EVENT_END,
         'STATUS:CONFIRMED',
+        'BEGIN:VALARM',
+        'TRIGGER:-P1D',
+        'ACTION:DISPLAY',
+        'DESCRIPTION:Deepika weds Vikas tomorrow',
+        'END:VALARM',
         'END:VEVENT',
         'END:VCALENDAR'
-      ].join('\r\n');
+      ].map(icsFold).join('\r\n') + '\r\n';
 
       const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'Deepika_Vikas_Wedding_Invitation.ics';
+      a.download = 'Deepika_Vikas_Wedding.ics';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
 
-      showToast('Wedding calendar invite (.ics) downloaded!');
+      showToast('Calendar file downloaded. Open it to add the wedding to your calendar!');
     });
 
     // -------------------------------------------------------------
@@ -1026,8 +1072,12 @@
     // -------------------------------------------------------------
     // 9. WEB AUDIO API - AUTHENTIC INDIAN WEDDING SHEHNAI & TANPURA
     // -------------------------------------------------------------
+    // Master volume + live oscillators, so muting silences notes that are already scheduled
+    let masterGain = null;
+    const activeOscs = new Set();
+
     function playNote(freq, start, duration, gainValue = 0.15) {
-      if (!audioCtx || !isPlaying) return;
+      if (!audioCtx || !isAudioPlaying) return;
 
       const osc = audioCtx.createOscillator();
       const gainNode = audioCtx.createGain();
@@ -1046,8 +1096,10 @@
       gainNode.gain.exponentialRampToValueAtTime(0.0001, start + duration);
 
       osc.connect(gainNode);
-      gainNode.connect(audioCtx.destination);
+      gainNode.connect(masterGain);
 
+      activeOscs.add(osc);
+      osc.onended = () => activeOscs.delete(osc);
       osc.start(start);
       osc.stop(start + duration);
     }
@@ -1082,7 +1134,7 @@
     ];
 
     function scheduleMelodyLoop() {
-      if (!audioCtx || !isPlaying) return;
+      if (!audioCtx || !isAudioPlaying) return;
 
       let now = audioCtx.currentTime + 0.1;
       melodyPhrase.forEach(n => {
@@ -1099,26 +1151,40 @@
       if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       }
+      if (!masterGain) {
+        masterGain = audioCtx.createGain();
+        masterGain.connect(audioCtx.destination);
+      }
+      masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
+      masterGain.gain.setValueAtTime(1, audioCtx.currentTime);
       if (audioCtx.state === 'suspended') {
         audioCtx.resume();
       }
-      isPlaying = true;
+      isAudioPlaying = true;
       audioText.textContent = 'Mute Melody';
       audioPing.classList.remove('hidden');
       scheduleMelodyLoop();
     }
 
     function stopWeddingMusic() {
-      isPlaying = false;
+      isAudioPlaying = false;
       if (audioLoopTimeout) {
         clearTimeout(audioLoopTimeout);
+        audioLoopTimeout = null;
       }
+      // Silence immediately and cancel every note already queued
+      if (audioCtx && masterGain) {
+        masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
+        masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
+      }
+      activeOscs.forEach(o => { try { o.stop(); } catch (e) {} });
+      activeOscs.clear();
       audioText.textContent = 'Play Shehnai';
       audioPing.classList.add('hidden');
     }
 
     toggleAudioBtn.addEventListener('click', () => {
-      if (isPlaying) {
+      if (isAudioPlaying) {
         stopWeddingMusic();
         showToast('Melody muted');
       } else {
