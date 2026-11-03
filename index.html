@@ -208,9 +208,6 @@
   <!-- Rising sky lanterns -->
   <div aria-hidden="true"><div class="lantern" style="left:33%;--dur:20s;--delay:0.0s;--dx:-27px"><svg width="22" height="30" viewBox="0 0 22 30"><ellipse cx="11" cy="16" rx="9" ry="12" fill="#FF9F1C" fill-opacity=".85"/><ellipse cx="11" cy="16" rx="4" ry="9" fill="#FFE08A" fill-opacity=".8"/><rect x="8" y="26" width="6" height="3" fill="#99731C"/></svg></div><div class="lantern" style="left:95%;--dur:22s;--delay:2.5s;--dx:21px"><svg width="22" height="30" viewBox="0 0 22 30"><ellipse cx="11" cy="16" rx="9" ry="12" fill="#FF9F1C" fill-opacity=".85"/><ellipse cx="11" cy="16" rx="4" ry="9" fill="#FFE08A" fill-opacity=".8"/><rect x="8" y="26" width="6" height="3" fill="#99731C"/></svg></div><div class="lantern" style="left:22%;--dur:17s;--delay:5.0s;--dx:-32px"><svg width="22" height="30" viewBox="0 0 22 30"><ellipse cx="11" cy="16" rx="9" ry="12" fill="#FF9F1C" fill-opacity=".85"/><ellipse cx="11" cy="16" rx="4" ry="9" fill="#FFE08A" fill-opacity=".8"/><rect x="8" y="26" width="6" height="3" fill="#99731C"/></svg></div><div class="lantern" style="left:5%;--dur:22s;--delay:7.5s;--dx:30px"><svg width="22" height="30" viewBox="0 0 22 30"><ellipse cx="11" cy="16" rx="9" ry="12" fill="#FF9F1C" fill-opacity=".85"/><ellipse cx="11" cy="16" rx="4" ry="9" fill="#FFE08A" fill-opacity=".8"/><rect x="8" y="26" width="6" height="3" fill="#99731C"/></svg></div><div class="lantern" style="left:40%;--dur:16s;--delay:10.0s;--dx:-12px"><svg width="22" height="30" viewBox="0 0 22 30"><ellipse cx="11" cy="16" rx="9" ry="12" fill="#FF9F1C" fill-opacity=".85"/><ellipse cx="11" cy="16" rx="4" ry="9" fill="#FFE08A" fill-opacity=".8"/><rect x="8" y="26" width="6" height="3" fill="#99731C"/></svg></div><div class="lantern" style="left:69%;--dur:24s;--delay:12.5s;--dx:6px"><svg width="22" height="30" viewBox="0 0 22 30"><ellipse cx="11" cy="16" rx="9" ry="12" fill="#FF9F1C" fill-opacity=".85"/><ellipse cx="11" cy="16" rx="4" ry="9" fill="#FFE08A" fill-opacity=".8"/><rect x="8" y="26" width="6" height="3" fill="#99731C"/></svg></div><div class="lantern" style="left:38%;--dur:18s;--delay:15.0s;--dx:-27px"><svg width="22" height="30" viewBox="0 0 22 30"><ellipse cx="11" cy="16" rx="9" ry="12" fill="#FF9F1C" fill-opacity=".85"/><ellipse cx="11" cy="16" rx="4" ry="9" fill="#FFE08A" fill-opacity=".8"/><rect x="8" y="26" width="6" height="3" fill="#99731C"/></svg></div><div class="lantern" style="left:36%;--dur:19s;--delay:17.5s;--dx:-37px"><svg width="22" height="30" viewBox="0 0 22 30"><ellipse cx="11" cy="16" rx="9" ry="12" fill="#FF9F1C" fill-opacity=".85"/><ellipse cx="11" cy="16" rx="4" ry="9" fill="#FFE08A" fill-opacity=".8"/><rect x="8" y="26" width="6" height="3" fill="#99731C"/></svg></div></div>
 
-  <!-- Interactive Floating Petals Canvas -->
-  <canvas id="petals-canvas" class="fixed inset-0 pointer-events-none z-20"></canvas>
-
   <!-- Ambient Sound & Controls Toolbar -->
   <div id="ambient-controls" class="fixed top-4 right-4 z-[60] flex items-center gap-2">
     <!-- Music Button -->
@@ -219,18 +216,13 @@
         <span id="audio-ping" class="hidden absolute inline-flex h-full w-full rounded-full bg-goldlight opacity-75 animate-ping"></span>
         <span class="relative inline-flex rounded-full h-3 w-3 bg-goldbase"></span>
       </span>
-      <span id="audio-text" class="text-xs font-medium tracking-wide">Play Shehnai</span>
+      <span id="audio-text" class="text-xs font-medium tracking-wide">Play Song</span>
       <svg id="music-svg" class="w-4 h-4 text-goldlight group-hover:rotate-12 transition-transform" fill="currentColor" viewBox="0 0 24 24">
         <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
       </svg>
     </button>
 
-    <!-- Petals Toggle -->
-    <button id="toggle-petals-btn" type="button" class="bg-royalmaroon/90 hover:bg-crimsonred border border-goldbase/60 text-goldlight p-2 rounded-full shadow-lg backdrop-blur-md transition-all duration-300" title="Toggle Falling Petals">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-      </svg>
-    </button>
+
 
     <!-- Print Button -->
     <button id="print-invite-btn" type="button" class="bg-royalmaroon/90 hover:bg-crimsonred border border-goldbase/60 text-goldlight p-2 rounded-full shadow-lg backdrop-blur-md transition-all duration-300" title="Print / Save Card">
@@ -802,11 +794,8 @@
     // 1. STATE & CONSTANTS
     // -------------------------------------------------------------
     const WEDDING_DATE = new Date("2026-11-20T10:00:00+05:30");
-    let isPetalsActive = true;
     let isAudioPlaying = false;
-    let audioCtx = null;
-    let audioLoopTimeout = null;
-
+        
     // Paste your Google Apps Script web-app URL here (see RSVP-SETUP.txt). Leave empty to disable saving.
     const RSVP_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxIryrf7qcldI89Wvs1NlH-1bXs69eZ6ftTBNTtWKh4EyH5-xowKFdaenbmKsEMqsiFjA/exec';
 
@@ -820,7 +809,6 @@
     const toggleAudioBtn = document.getElementById('toggle-audio-btn');
     const audioText = document.getElementById('audio-text');
     const audioPing = document.getElementById('audio-ping');
-    const togglePetalsBtn = document.getElementById('toggle-petals-btn');
     const printInviteBtn = document.getElementById('print-invite-btn');
     const addCalendarBtn = document.getElementById('add-calendar-btn');
     const rsvpForm = document.getElementById('rsvp-form');
@@ -866,10 +854,7 @@
       const guestName = guestNameInput.value.trim() || 'Respected Family & Friends';
       updateGuestName(guestName);
       
-      // Burst petals
-      burstPetalsConfetti();
-
-      // Trigger Web Audio Shehnai on first interaction
+      // Start the wedding song on first interaction (browsers require a click)
       if (!isAudioPlaying) {
         startWeddingMusic();
       }
@@ -993,219 +978,42 @@
       window.print();
     });
 
+    // 9. WEDDING SONG (custom MP3)
     // -------------------------------------------------------------
-    // 8. PETALS CANVAS ANIMATION
-    // -------------------------------------------------------------
-    const canvas = document.getElementById('petals-canvas');
-    const ctx = canvas.getContext('2d');
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
-
-    window.addEventListener('resize', () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    });
-
-    const petalColors = ['#D4AF37', '#E6C265', '#E63946', '#9B2226', '#FFB703', '#FFF1B0'];
-    const petals = [];
-    const NUM_PETALS = 40;
-
-    class Petal {
-      constructor(isBurst = false) {
-        this.reset(isBurst);
-      }
-      reset(isBurst = false) {
-        this.x = isBurst ? width / 2 : Math.random() * width;
-        this.y = isBurst ? height / 2 : Math.random() * -height;
-        this.size = Math.random() * 8 + 6;
-        this.color = petalColors[Math.floor(Math.random() * petalColors.length)];
-        this.speedY = isBurst ? (Math.random() - 0.5) * 12 : Math.random() * 1.5 + 1;
-        this.speedX = isBurst ? (Math.random() - 0.5) * 12 : (Math.random() - 0.5) * 1.2;
-        this.angle = Math.random() * 360;
-        this.angularSpeed = (Math.random() - 0.5) * 2;
-        this.opacity = Math.random() * 0.6 + 0.4;
-      }
-      update() {
-        this.y += this.speedY;
-        this.x += this.speedX + Math.sin(this.y * 0.01) * 0.5;
-        this.angle += this.angularSpeed;
-
-        if (this.y > height + 20 || this.x < -20 || this.x > width + 20) {
-          this.reset();
-        }
-      }
-      draw() {
-        ctx.save();
-        ctx.translate(this.x, this.y);
-        ctx.rotate((this.angle * Math.PI) / 180);
-        ctx.globalAlpha = this.opacity;
-        ctx.fillStyle = this.color;
-        ctx.beginPath();
-        // Petal shape curve
-        ctx.moveTo(0, -this.size);
-        ctx.bezierCurveTo(this.size * 0.8, -this.size * 0.4, this.size * 0.8, this.size * 0.4, 0, this.size);
-        ctx.bezierCurveTo(-this.size * 0.8, this.size * 0.4, -this.size * 0.8, -this.size * 0.4, 0, -this.size);
-        ctx.fill();
-        ctx.restore();
-      }
-    }
-
-    for (let i = 0; i < NUM_PETALS; i++) {
-      petals.push(new Petal());
-    }
-
-    function burstPetalsConfetti() {
-      for (let i = 0; i < 30; i++) {
-        petals.push(new Petal(true));
-      }
-      // Trim back after burst
-      setTimeout(() => {
-        while (petals.length > NUM_PETALS) {
-          petals.pop();
-        }
-      }, 4000);
-    }
-
-    function animatePetals() {
-      if (isPetalsActive) {
-        ctx.clearRect(0, 0, width, height);
-        petals.forEach(p => {
-          p.update();
-          p.draw();
-        });
-      } else {
-        ctx.clearRect(0, 0, width, height);
-      }
-      requestAnimationFrame(animatePetals);
-    }
-    requestAnimationFrame(animatePetals);
-
-    togglePetalsBtn.addEventListener('click', () => {
-      isPetalsActive = !isPetalsActive;
-      showToast(isPetalsActive ? 'Petals shower enabled 🌸' : 'Petals paused');
-    });
-
-    // -------------------------------------------------------------
-    // 9. WEB AUDIO API - AUTHENTIC INDIAN WEDDING SHEHNAI & TANPURA
-    // -------------------------------------------------------------
-    // Master volume + live oscillators, so muting silences notes that are already scheduled
-    let masterGain = null;
-    const activeOscs = new Set();
-
-    function playNote(freq, start, duration, gainValue = 0.15) {
-      if (!audioCtx || !isAudioPlaying) return;
-
-      const osc = audioCtx.createOscillator();
-      const gainNode = audioCtx.createGain();
-
-      // Dual oscillator for rich Shehnai reedy texture
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(freq, start);
-      // Subtle microtonal bend common in Indian Shehnai
-      osc.frequency.exponentialRampToValueAtTime(freq * 1.015, start + duration * 0.3);
-      osc.frequency.exponentialRampToValueAtTime(freq, start + duration);
-
-      // Envelope: gentle attack, rich sustain, smooth decay
-      gainNode.gain.setValueAtTime(0.0001, start);
-      gainNode.gain.exponentialRampToValueAtTime(gainValue, start + 0.15);
-      gainNode.gain.setValueAtTime(gainValue * 0.85, start + duration - 0.2);
-      gainNode.gain.exponentialRampToValueAtTime(0.0001, start + duration);
-
-      osc.connect(gainNode);
-      gainNode.connect(masterGain);
-
-      activeOscs.add(osc);
-      osc.onended = () => activeOscs.delete(osc);
-      osc.start(start);
-      osc.stop(start + duration);
-    }
-
-    // Festive Raag Yaman notes (Shehnai scale on D root)
-    const D4 = 293.66;
-    const E4 = 329.63;
-    const Fs4 = 369.99;
-    const Gs4 = 415.30;
-    const A4 = 440.00;
-    const B4 = 493.88;
-    const Cs5 = 554.37;
-    const D5 = 587.33;
-
-    // Traditional wedding phrase in Raag Yaman / Bilawal
-    const melodyPhrase = [
-      { f: D4, d: 0.8 },
-      { f: E4, d: 0.6 },
-      { f: Fs4, d: 1.2 },
-      { f: E4, d: 0.6 },
-      { f: Fs4, d: 0.8 },
-      { f: A4, d: 1.4 },
-      { f: B4, d: 0.8 },
-      { f: A4, d: 0.6 },
-      { f: Fs4, d: 1.0 },
-      { f: E4, d: 0.8 },
-      { f: D4, d: 1.8 },
-      { f: Cs5, d: 0.8 },
-      { f: D5, d: 1.5 },
-      { f: A4, d: 1.2 },
-      { f: Fs4, d: 1.6 }
-    ];
-
-    function scheduleMelodyLoop() {
-      if (!audioCtx || !isAudioPlaying) return;
-
-      let now = audioCtx.currentTime + 0.1;
-      melodyPhrase.forEach(n => {
-        playNote(n.f, now, n.d, 0.12);
-        now += n.d + 0.1;
-      });
-
-      // Loop after phrase ends
-      const totalDuration = (now - audioCtx.currentTime) * 1000;
-      audioLoopTimeout = setTimeout(scheduleMelodyLoop, totalDuration + 800);
-    }
+    const weddingSong = new Audio('wedding-song.mp3');
+    weddingSong.loop = true;
+    weddingSong.preload = 'auto';
+    weddingSong.volume = 0.8;
 
     function startWeddingMusic() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if (!masterGain) {
-        masterGain = audioCtx.createGain();
-        masterGain.connect(audioCtx.destination);
-      }
-      masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
-      masterGain.gain.setValueAtTime(1, audioCtx.currentTime);
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
+      const playing = weddingSong.play();
+      if (playing && playing.catch) {
+        playing.catch(() => {
+          isAudioPlaying = false;
+          audioText.textContent = 'Play Song';
+          audioPing.classList.add('hidden');
+          showToast('Could not play the song. Tap the music button to try again.');
+        });
       }
       isAudioPlaying = true;
-      audioText.textContent = 'Mute Melody';
+      audioText.textContent = 'Mute Song';
       audioPing.classList.remove('hidden');
-      scheduleMelodyLoop();
     }
 
     function stopWeddingMusic() {
+      weddingSong.pause();
       isAudioPlaying = false;
-      if (audioLoopTimeout) {
-        clearTimeout(audioLoopTimeout);
-        audioLoopTimeout = null;
-      }
-      // Silence immediately and cancel every note already queued
-      if (audioCtx && masterGain) {
-        masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
-        masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
-      }
-      activeOscs.forEach(o => { try { o.stop(); } catch (e) {} });
-      activeOscs.clear();
-      audioText.textContent = 'Play Shehnai';
+      audioText.textContent = 'Play Song';
       audioPing.classList.add('hidden');
     }
 
     toggleAudioBtn.addEventListener('click', () => {
       if (isAudioPlaying) {
         stopWeddingMusic();
-        showToast('Melody muted');
+        showToast('Song muted');
       } else {
         startWeddingMusic();
-        showToast('Playing traditional wedding melody 🎵');
+        showToast('Playing wedding song 🎵');
       }
     });
 
