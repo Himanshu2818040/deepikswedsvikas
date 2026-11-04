@@ -153,6 +153,7 @@
     'Two hearts, one soul. Congratulations Deepika and Vikas, may your bond grow stronger every day!': 'दो दिल, एक जान। दीपिका और विकास को हार्दिक बधाई, आपका बंधन हर दिन और मजबूत हो!',
 
     // --- souvenir maker ---
+    'View the Invitation': 'निमंत्रण देखें',
     'Keepsake': 'यादगार',
     'Create Your Wedding Souvenir': 'अपनी शादी की यादगार बनाएँ',
     'Add your photo to our wedding frame, then download it or share it. A little keepsake from us to you.': 'हमारे शादी के फ्रेम में अपनी तस्वीर लगाएँ, फिर उसे डाउनलोड करें या साझा करें। हमारी ओर से आपके लिए एक छोटी-सी यादगार।',
