@@ -152,6 +152,25 @@
     'May Lord Ganesha remove every obstacle and Goddess Lakshmi fill your home with joy.': 'भगवान गणेश सभी विघ्न दूर करें और माँ लक्ष्मी आपके घर को खुशियों से भर दें।',
     'Two hearts, one soul. Congratulations Deepika and Vikas, may your bond grow stronger every day!': 'दो दिल, एक जान। दीपिका और विकास को हार्दिक बधाई, आपका बंधन हर दिन और मजबूत हो!',
 
+    // --- souvenir maker ---
+    'Keepsake': 'यादगार',
+    'Create Your Wedding Souvenir': 'अपनी शादी की यादगार बनाएँ',
+    'Add your photo to our wedding frame, then download it or share it. A little keepsake from us to you.': 'हमारे शादी के फ्रेम में अपनी तस्वीर लगाएँ, फिर उसे डाउनलोड करें या साझा करें। हमारी ओर से आपके लिए एक छोटी-सी यादगार।',
+    'Take a Photo': 'फ़ोटो खींचें',
+    'Choose from Gallery': 'गैलरी से चुनें',
+    'Zoom': 'ज़ूम',
+    'Drag the photo to fit it in the frame': 'तस्वीर को खिसकाकर फ्रेम में सेट करें',
+    'Your name (optional)': 'आपका नाम (वैकल्पिक)',
+    'Download Souvenir': 'यादगार डाउनलोड करें',
+    'Share': 'साझा करें',
+    'Your photo stays on your phone. Nothing is uploaded.': 'आपकी तस्वीर आपके फ़ोन में ही रहती है। कुछ भी अपलोड नहीं होता।',
+    'Wedding souvenir preview': 'शादी की यादगार का पूर्वावलोकन',
+    'Your photo here': 'आपकी तस्वीर यहाँ',
+    'With love, {name}': 'प्यार सहित, {name}',
+    'Souvenir saved! Check your downloads.': 'यादगार सेव हो गई! अपने डाउनलोड देखें।',
+    'Please choose an image file.': 'कृपया कोई तस्वीर चुनें।',
+    'Thursday, 19th November 2026 • Kaithal, Haryana': 'गुरुवार, 19 नवंबर 2026 • कैथल, हरियाणा',
+
     // --- strings built at run time ---
     'Song muted': 'गीत बंद किया गया',
     'Playing wedding song 🎵': 'विवाह गीत चल रहा है 🎵',
