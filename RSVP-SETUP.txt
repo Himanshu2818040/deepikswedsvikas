@@ -7,10 +7,10 @@ SAVING RSVPs TO GOOGLE SHEETS (free, ~5 minutes)
 function doPost(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
   if (sheet.getLastRow() === 0) {
-    sheet.appendRow(['Time', 'Name', 'City', 'Relation', 'Message', 'Invited as']);
+    sheet.appendRow(['Time', 'Name', 'City', 'Relation', 'Message', 'Invited as', 'Side']);
   }
   var p = e.parameter;
-  sheet.appendRow([new Date(), p.name, p.contact, p.attendance, p.message, p.invitedAs]);
+  sheet.appendRow([new Date(), p.name, p.contact, p.attendance, p.message, p.invitedAs, p.side]);
   return ContentService.createTextOutput('ok');
 }
 
@@ -22,5 +22,9 @@ function doPost(e) {
 5. In index.html find:   const RSVP_ENDPOINT = '';
    and paste the URL between the quotes.
 6. Re-upload index.html to your host and submit a test RSVP. A row should appear in the sheet.
+
+Already have the sheet running? Add a "Side" header in cell G1 and update the two lines
+above in the script, then Deploy > Manage deployments > Edit > New version. Rows from the
+bride's page say Bride, rows from the groom's page say Groom (older rows stay blank).
 
 If you edit the script later, use Deploy > Manage deployments > Edit > New version.

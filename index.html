@@ -854,7 +854,7 @@
     let isAudioPlaying = false;
         
     // Paste your Google Apps Script web-app URL here (see RSVP-SETUP.txt). Leave empty to disable saving.
-    const RSVP_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxIryrf7qcldI89Wvs1NlH-1bXs69eZ6ftTBNTtWKh4EyH5-xowKFdaenbmKsEMqsiFjA/exec';
+    const RSVP_ENDPOINT = 'https://script.google.com/macros/s/AKfycbybxI_BQkVCvd2zdaodQ3GOoaydCkUq2m3S9sfV5JjxyFcmlAGj9bxQjM-5r1l8JhRo4g/exec';
 
     // -------------------------------------------------------------
     // 2. DOM ELEMENTS
@@ -1144,7 +1144,7 @@
         fetch(RSVP_ENDPOINT, {
           method: 'POST',
           mode: 'no-cors',
-          body: new URLSearchParams({ name, contact: phone, attendance, message, invitedAs: guestName })
+          body: new URLSearchParams({ name, contact: phone, attendance, message, invitedAs: guestName, side: 'Bride' })
         }).catch(() => showToast(T('Could not save your RSVP. Please call the family to confirm.'), 'error'));
       }
       rsvpForm.reset();
