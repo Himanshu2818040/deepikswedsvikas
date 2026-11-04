@@ -6,12 +6,12 @@ window.I18N_EXTRA = {
 
   // hero
   'With the divine blessings of the Almighty': 'परमपिता परमेश्वर के दिव्य आशीर्वाद से',
-  'Smt. Seena Rani & Sh. Dharamvir Saini': 'श्रीमती सीना रानी एवं श्री धर्मवीर सैनी',
+  'Smt. Seema Rani & Sh. Dharamvir Saini': 'श्रीमती सीमा रानी एवं श्री धर्मवीर सैनी',
   'feel immense pleasure in requesting your presence on the auspicious occasion of the marriage of their loving Son':
     'अपने लाड़ले सुपुत्र के शुभ विवाह के पावन अवसर पर आपको सादर आमंत्रित करते हुए हमें अत्यंत हर्ष हो रहा है।',
 
   // couple
-  'Smt. Seena Rani': 'श्रीमती सीना रानी',
+  'Smt. Seema Rani': 'श्रीमती सीमा रानी',
   'Sh. Dharamvir Saini': 'श्री धर्मवीर सैनी',
   'Chandana Gate, Kaithal': 'चंदाना गेट, कैथल',
   'Smt. Anita': 'श्रीमती अनीता',
@@ -71,8 +71,8 @@ window.I18N_EXTRA = {
   // run-time strings
   'Thank you, {name}! Your blessing has reached Vikas & Deepika with love. 🙏': 'धन्यवाद, {name}! आपका आशीर्वाद विकास और दीपिका तक प्रेम सहित पहुँच गया है। 🙏',
   'Vikas weds Deepika - Wedding': 'विकास और दीपिका का शुभ विवाह',
-  'Wedding of Vikas (S/o Seena Rani & Dharamvir Saini) and Deepika (D/o Anita & Krishan Kumar Saini). Mandha (10:15 AM), Lunch (11:15 AM) and Sehrabandi (5:15 PM) on 19 Nov; Barat departs 20 Nov (10:15 AM).':
-    'विकास (सुपुत्र सीना रानी व धर्मवीर सैनी) एवं दीपिका (सुपुत्री अनीता व कृष्ण कुमार सैनी) का शुभ विवाह। 19 नवंबर को मांढा (प्रातः 10:15 बजे), भोज (प्रातः 11:15 बजे) और सेहराबंदी (शाम 5:15 बजे); बरात का प्रस्थान 20 नवंबर (प्रातः 10:15 बजे)।',
+  'Wedding of Vikas (S/o Seema Rani & Dharamvir Saini) and Deepika (D/o Anita & Krishan Kumar Saini). Mandha (10:15 AM), Lunch (11:15 AM) and Sehrabandi (5:15 PM) on 19 Nov; Barat departs 20 Nov (10:15 AM).':
+    'विकास (सुपुत्र सीमा रानी व धर्मवीर सैनी) एवं दीपिका (सुपुत्री अनीता व कृष्ण कुमार सैनी) का शुभ विवाह। 19 नवंबर को मांढा (प्रातः 10:15 बजे), भोज (प्रातः 11:15 बजे) और सेहराबंदी (शाम 5:15 बजे); बरात का प्रस्थान 20 नवंबर (प्रातः 10:15 बजे)।',
   'Shagun Palace, Dogran Gate, Kaithal, Haryana': 'शगुन पैलेस, डोगरान गेट, कैथल, हरियाणा',
   'Vikas weds Deepika tomorrow': 'कल विकास और दीपिका का विवाह है'
 };
