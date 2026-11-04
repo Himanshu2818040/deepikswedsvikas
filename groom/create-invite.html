@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Create Guest Invite | Vikas weds Deepika</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px; font-family: Georgia, 'Times New Roman', serif; color: #FFF9E6;
+      background: linear-gradient(135deg, #2C060B 0%, #5A0F1C 40%, #7B1123 70%, #3A0710 100%); }
+    .card { width: 100%; max-width: 480px; background: #4A0E17; border: 2px solid #D4AF37; border-radius: 20px; padding: 28px 22px; box-shadow: 0 10px 40px rgba(0,0,0,.5); }
+    h1 { margin: 0 0 4px; text-align: center; color: #F5E084; font-size: 24px; }
+    p.sub { margin: 0 0 22px; text-align: center; font-size: 13px; color: rgba(255,249,230,.7); font-style: italic; }
+    label { display: block; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #E6C265; margin-bottom: 6px; }
+    select { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(212,175,55,.5); background: #2C060B; color: #FFF9E6; font-size: 16px; font-family: inherit; }
+    input, textarea { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(212,175,55,.5); background: #2C060B; color: #FFF9E6; font-size: 16px; font-family: inherit; }
+    textarea { resize: vertical; min-height: 130px; line-height: 1.45; font-size: 14px; }
+    .field { margin-top: 16px; }
+    .hint { font-size: 11px; color: rgba(255,249,230,.55); margin-top: 5px; }
+    input:focus, textarea:focus { outline: none; border-color: #F5E084; }
+    .out { margin-top: 18px; padding: 12px; border-radius: 12px; background: rgba(0,0,0,.35); border: 1px dashed rgba(212,175,55,.5); font-size: 12px; word-break: break-all; color: #F5E084; min-height: 44px; }
+    .row { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+    button, a.btn { flex: 1; min-width: 130px; text-align: center; text-decoration: none; padding: 12px; border: 0; border-radius: 999px; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; font-family: inherit;
+      background: linear-gradient(90deg, #99731C, #D4AF37, #99731C); color: #2C060B; }
+    button:disabled, a.btn.off { opacity: .4; pointer-events: none; }
+    .ok { text-align: center; font-size: 12px; color: #9be28f; height: 16px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Create a Personal Invite</h1>
+    <p class="sub" style="margin-bottom:6px;color:#F5E084;font-style:normal">Groom's side &bull; Vikas &amp; Deepika</p>
+    <p class="sub">Type a guest or family name to get their personal link and WhatsApp message.</p>
+
+    <label for="name">Guest / Family Name</label>
+    <input id="name" type="text" maxlength="60" placeholder="e.g. Sharma Family" autocomplete="off">
+
+    <div class="field">
+      <label for="lang">Invitation Language</label>
+      <select id="lang">
+        <option value="">Let the guest choose</option>
+        <option value="en">English</option>
+        <option value="hi">हिन्दी (Hindi)</option>
+      </select>
+      <div class="hint">Picking a language opens the invitation straight in it, with no language question. The message below switches too.</div>
+    </div>
+
+    <div class="field">
+      <label for="phone">WhatsApp Number (optional)</label>
+      <input id="phone" type="tel" inputmode="tel" maxlength="16" placeholder="e.g. 98131 04701" autocomplete="off">
+      <div class="hint">Opens the chat with this guest directly. Leave empty to choose a contact in WhatsApp.</div>
+    </div>
+
+    <div class="field">
+      <label for="msg-text">Your Message</label>
+      <textarea id="msg-text"></textarea>
+      <div class="hint"><b>{name}</b> becomes the guest's name and <b>{link}</b> becomes their personal link. Edit anything else freely.</div>
+    </div>
+
+    <div class="out" id="link">Your link will appear here</div>
+
+    <div class="row">
+      <button id="copy" type="button" disabled>Copy Message</button>
+      <a id="wa" class="btn off" href="#" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+    </div>
+    <div class="ok" id="msg"></div>
+  </div>
+
+  <script>
+    // Link points at the invitation page that sits next to this file
+    const base = new URL('index.html', window.location.href);
+    base.pathname = base.pathname.replace(/index\.html$/, '');
+    const input = document.getElementById('name');
+    const phoneInput = document.getElementById('phone');
+    const msgText = document.getElementById('msg-text');
+    const out = document.getElementById('link');
+    const copyBtn = document.getElementById('copy');
+    const wa = document.getElementById('wa');
+    const msg = document.getElementById('msg');
+
+    // Plain symbols only (no surrogate-pair emoji) so every WhatsApp client shows them correctly
+    const DEFAULT_MESSAGE = [
+      'Dear {name},',
+      '',
+      'With the blessings of our elders, we joyfully invite you to the wedding of Vikas & Deepika ✨',
+      'Thursday, 19th November 2026 • Kaithal, Haryana',
+      '',
+      'Your personal invitation:',
+      '{link}',
+      '',
+      'Your presence and blessings will make our day complete ❤'
+    ].join('\n');
+    const DEFAULT_MESSAGE_HI = [
+      'प्रिय {name},',
+      '',
+      'हमारे बड़ों के आशीर्वाद से, हम आपको विकास और दीपिका के शुभ विवाह में सादर आमंत्रित करते हैं \u2728',
+      'गुरुवार, 19 नवंबर 2026 \u2022 कैथल, हरियाणा',
+      '',
+      'आपका निजी निमंत्रण:',
+      '{link}',
+      '',
+      'आपकी उपस्थिति और आशीर्वाद से हमारा दिन पूर्ण होगा \u2764'
+    ].join('\n');
+    const langSelect = document.getElementById('lang');
+
+    try { msgText.value = localStorage.getItem('invite-msg-groom') || DEFAULT_MESSAGE; } catch (e) { msgText.value = DEFAULT_MESSAGE; }
+
+    function personalLink(name) {
+      const u = new URL(base.href);
+      const params = { to: name };
+      if (langSelect.value) params.lang = langSelect.value;
+      u.search = new URLSearchParams(params).toString();
+      return u.toString();
+    }
+
+    function buildMessage(name, link) {
+      let text = msgText.value;
+      if (!text.includes('{link}')) text += '\n{link}';
+      return text.split('{name}').join(name).split('{link}').join(link);
+    }
+
+    function normalisePhone(raw) {
+      const digits = raw.replace(/\D/g, '');
+      if (digits.length === 10) return '91' + digits;            // Indian mobile without country code
+      if (digits.length === 11 && digits[0] === '0') return '91' + digits.slice(1);
+      return digits;
+    }
+
+    function refresh() {
+      const name = input.value.trim();
+      msg.textContent = '';
+      if (!name) {
+        out.textContent = 'Your link will appear here';
+        copyBtn.disabled = true;
+        wa.classList.add('off');
+        return;
+      }
+      const link = personalLink(name);
+      const text = buildMessage(name, link);
+      out.textContent = link;
+      copyBtn.disabled = false;
+      wa.classList.remove('off');
+      const phone = normalisePhone(phoneInput.value);
+      wa.href = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(text);
+    }
+
+    [input, phoneInput].forEach(el => el.addEventListener('input', refresh));
+
+    // Switch the message to the chosen language, but never overwrite text the user edited
+    langSelect.addEventListener('change', () => {
+      const untouched = msgText.value === DEFAULT_MESSAGE || msgText.value === DEFAULT_MESSAGE_HI;
+      if (untouched) {
+        msgText.value = langSelect.value === 'hi' ? DEFAULT_MESSAGE_HI : DEFAULT_MESSAGE;
+        try { localStorage.setItem('invite-msg-groom', msgText.value); } catch (e) {}
+      }
+      refresh();
+    });
+    msgText.addEventListener('input', () => {
+      try { localStorage.setItem('invite-msg-groom', msgText.value); } catch (e) {}
+      refresh();
+    });
+
+    // Copy the full message (text + link) so it can be pasted anywhere
+    copyBtn.addEventListener('click', async () => {
+      const name = input.value.trim();
+      const text = buildMessage(name, personalLink(name));
+      try {
+        await navigator.clipboard.writeText(text);
+        msg.textContent = 'Message copied!';
+      } catch (e) {
+        window.prompt('Copy this message:', text);
+      }
+    });
+
+    refresh();
+  </script>
+</body>
+</html>

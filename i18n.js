@@ -168,6 +168,11 @@
     'Deepika weds Vikas tomorrow': 'कल दीपिका और विकास का विवाह है'
   };
 
+  // Pages with their own wording (e.g. the groom's side) add entries before this script loads
+  if (window.I18N_EXTRA) {
+    Object.keys(window.I18N_EXTRA).forEach(function (k) { HI[k] = window.I18N_EXTRA[k]; });
+  }
+
   var ATTRS = ['placeholder', 'aria-label', 'title', 'data-text'];
   var SKIP = 'script, style, textarea, [data-no-i18n]';
   var lang = 'en';
